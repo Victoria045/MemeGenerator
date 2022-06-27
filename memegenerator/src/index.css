@@ -66,11 +66,29 @@ form button {
 .meme-img {
   text-align: center;
   margin-top: 2em;
-  
   object-fit: cover;
 }
 .meme-img img {
   width: 60%;
   height: 280px;
   border-radius: 2px;
+}
+.meme--image {
+  position: relative;
+}
+
+.meme--text {
+  position: absolute;
+  font-weight: 900;
+  font-size: 2rem;
+  width: 15ch;
+  color: #ffffff;
+}
+.top {
+  top: 280px;
+  left: 550px;
+}
+.bottom {
+  top: 480px;
+  left: 550px;
 }

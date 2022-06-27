@@ -1,8 +1,8 @@
-import React from "react"
+import React, {useEffect} from "react"
 import memeImg from "../assets/memeimg.png";
 import troll from "../assets/Troll Face.png";
 
-import MemesData from "./MemesData";
+// import MemesData from "./MemesData";
 
 export default function MemeComp() {
   const [meme, setMeme] = React.useState({
@@ -11,9 +11,27 @@ export default function MemeComp() {
       "randomImage": memeImg
   })
  
-  const [allMemeImages, setAllMemeImages] = React.useState(MemesData)
+  const [allMemeImages, setAllMemeImages] = React.useState({})
 
-  function handleClicked(e){
+  useEffect(() => {
+    fetch('https://api.imgflip.com/get_memes')
+        .then(res => res.json())
+        .then(data => setAllMemeImages(data))
+
+    console.log('New image')
+  }, [])
+
+  function handleChange(event) {
+    const{name, value} = event.target
+
+    setMeme(prevMeme => ({
+      ...prevMeme, 
+      [name] : value
+    }))
+  }
+  // console.log(meme)
+
+  function handleSubmit(e){
     e.preventDefault();
 
     const memesArray = allMemeImages.data.memes
@@ -41,18 +59,20 @@ export default function MemeComp() {
   
   return(
     <>
-      <form>
+      <form onSubmit={handleSubmit}>
           <div className="form-input">
-            <input type="text" placeholder="Shut up"/>
-            <input type="text" placeholder="and take my money"/>
+            <input name="topText" value={meme.topText} type="text" onChange={handleChange} placeholder="Shut up"/>
+            <input name="bottomText" value={meme.bottomText} type="text" onChange={handleChange} placeholder="and take my money"/>
           </div> 
           <div className="btn">
-            <button onClick={handleClicked}>Get a new meme image</button>  
+            <button>Get a new meme image</button>  
           </div>
       </form>
       <div className="meme-img">
         {/* <img src={memeItem} /> */}
-        <img src={meme.randomImage} />
+        <img className="meme--image" src={meme.randomImage} />
+        <h2 className="meme--text top">{meme.topText.toUpperCase()}</h2>
+        <h2 className="meme--text bottom">{meme.bottomText.toUpperCase()}</h2>
       </div>
     </>
   )
